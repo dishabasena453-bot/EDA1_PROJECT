@@ -7,24 +7,24 @@ This project focuses on performing an end-to-end **Exploratory Data Analysis (ED
 3. Business Intelligence & Analytics: Write complex SQL queries (including aggregations, window functions, and Common Table Expressions) to solve realistic retail challenges and derive actionable performance insights.
 
 **1 DATABASE SETUP**
+'''sql
 create database sql_project;
 
 create table retail_sales(
- transactions_id int primary key,	
- sale_date	date,
- sale_time	time,
- customer_id int,	
- gender	varchar(15),
- age int,
- category varchar(15),	
- quantiy int,	
- price_per_unit float,	
- cogs float,	
- total_sale float
+transactions_id int primary key,	
+sale_date	date,
+sale_time	time,
+customer_id int,	
+gender	varchar(15),
+age int,
+category varchar(15),	
+quantiy int,	
+price_per_unit float,	
+cogs float,	
+total_sale float
 ); 
 
 **DATA EXPLORATION AND CLEANING*8
-
 select count(*) from retail_sales;
 select distinct * from retail_sales;
 describe retail_sales;
@@ -59,40 +59,52 @@ or quantiy is null
 or price_per_unit is null
 or cogs is null
 or total_sale is null;
+'''
 
 
 **DATA ANALYSING AND FINDINGS**
 The following SQL queries were developed to answer specific business questions:
 
 **Write a SQL query to retrieve all columns for sales made on '2022-11-05'**
+'''sql
 SELECT * FROM RETAIL_SALES 
 WHERE SALE_DATE = '2022-11-05' ;
+'''
 
 **Write a SQL query to retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 4 in the month of Nov-2022:**
+''' sql
 select * from retail_sales
 where category ="Clothing"
 and quantiy >= 4
 and month(sale_date) =11
 and year(sale_date) = 2022;
+'''
 
 **Write a SQL query to calculate the total sales (total_sale) for each category.**
+''' sql
 select 
 category,
 sum(total_sale)
 from retail_sales
 group by category;
+'''
 
 **Write a SQL query to find the average age of customers who purchased items from the 'Beauty' category**
+'''sql
 select
 round(avg(age),2) 
 from retail_sales
 where category="Beauty" ;
+'''
 
 **Write a SQL query to find all transactions where the total_sale is greater than 1000.**
+''' sql
 select * from retail_sales 
 where total_sale > 1000;
+'''
 
 ** Write a SQL query to find the total number of transactions (transaction_id) made by each gender in each category.**
+''' sql
 select 
 gender,
 category,
@@ -100,8 +112,10 @@ count(transactions_id)
 from retail_sales
 group by gender,
 category;
+'''
 
 **Write a SQL query to calculate the average sale for each month. Find out best selling month in each year**
+'''sql
 select
 year,
 month,
@@ -118,9 +132,11 @@ group by YEAR,
  month
  ) as t1 
  where ranking = 1; 
+ '''
 
 
 **Write a SQL query to find the top 5 customers based on the highest total sales**
+''' sql
 select 
 customer_id,
 sum(total_sale)
@@ -128,16 +144,20 @@ from retail_sales
 group by customer_id
 order by sum(total_sale)  desc
 limit 5;
+'''
 
 
 **Write a SQL query to find the number of unique customers who purchased items from each category**
+''' sql
 select 
 category, 
 count(distinct(customer_id)) as customer
 from retail_sales
 group by category;
+'''
 
 **Write a SQL query to create each shift and number of orders (Example Morning <12, Afternoon Between 12 & 17, Evening >17)**
+'''sql
 with hourly_sale
 as 
 ( 
@@ -154,6 +174,7 @@ shift ,
 count(*) as total_order
 from hourly_sale
 group by shift;
+'''
 
 
 
